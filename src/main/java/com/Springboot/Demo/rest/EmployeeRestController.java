@@ -3,6 +3,7 @@ package com.Springboot.Demo.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,44 +21,43 @@ import com.Springboot.Demo.entity.Employee;
 public class EmployeeRestController {
 
 	@Autowired
-	private EmployeeDAO employeeDAO ;
-	
+	@Qualifier("employeeDAOJPAImpl")
+	private EmployeeDAO employeeDAO;
+
 	@GetMapping("/employees")
-	public List<Employee> getemployee()
-	{
+	public List<Employee> getemployee() {
 		return employeeDAO.getEmployee();
-		
+
 	}
+
 	@GetMapping("/employees/{idEmployee}")
 	public Employee getEmployeeById(@PathVariable int idEmployee) {
 		return employeeDAO.getEmployeeById(idEmployee);
-		
+
 	}
-	
+
 	@PostMapping("/employees")
 	public Employee addEmployee(@RequestBody Employee employee) {
 		employee.setId(0);
 		employeeDAO.saveEmployee(employee);
-		return employee ;
-		
+		return employee;
+
 	}
-	
+
 	@PutMapping("/employees")
-	public Employee updateEmployee(@RequestBody Employee employee )
-	{
+	public Employee updateEmployee(@RequestBody Employee employee) {
 		employeeDAO.saveEmployee(employee);
-		return employee ;
+		return employee;
 	}
-	
+
 	@DeleteMapping("/employees/{idEmpolyee}")
-	public void deleteEmployee(@PathVariable int idEmpolyee ) {
-		
+	public void deleteEmployee(@PathVariable int idEmpolyee) {
+
 		Employee theEmployee = employeeDAO.getEmployeeById(idEmpolyee);
-		if (theEmployee == null )
-		{
+		if (theEmployee == null) {
 			System.out.println("employee not found ");
 		}
-		
+
 		employeeDAO.deleteEmployee(idEmpolyee);
-	}	
+	}
 }
